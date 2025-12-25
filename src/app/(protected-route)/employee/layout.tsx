@@ -1,19 +1,14 @@
 "use client";
+import Sidebar from "@/components/common/Sidebar";
 import { useState } from "react";
-import Sidebar from "@/components/Sidebar";
 
-const items = [
-  { href: "/employee", label: "Dashboard" },
-  { href: "/employee/attendance", label: "Attendance" },
-  { href: "/employee/leave", label: "Leave" },
-];
 
 export default function EmployeeLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="flex gap-6" style={{ ["--accent" as any]: "#059669" }}>
+    <div className="flex gap-6">
       <div className="hidden md:block">
-        <Sidebar items={items} title="Employee" />
+        <Sidebar role="employee" title="Employee" />
       </div>
       <div className="min-w-0 flex-1">
         <div className="md:hidden mb-3">
@@ -29,7 +24,7 @@ export default function EmployeeLayout({ children }: { children: React.ReactNode
               <div className="text-sm font-semibold">Employee Menu</div>
               <button className="glass px-2 py-1 rounded-md text-xs" onClick={() => setOpen(false)}>Close</button>
             </div>
-            <Sidebar items={items} />
+            <Sidebar role="employee" title="Employee" />
           </div>
         </div>
       )}

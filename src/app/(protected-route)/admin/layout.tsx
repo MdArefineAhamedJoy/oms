@@ -1,25 +1,13 @@
 "use client";
 import { useState } from "react";
-import Sidebar from "@/components/Sidebar";
-
-const items = [
-  { href: "/admin", label: "Dashboard" },
-  { href: "/admin/users", label: "Users" },
-  { href: "/admin/roster", label: "Roster" },
-  { href: "/admin/shifts", label: "Shifts" },
-  { href: "/admin/salary", label: "Salary" },
-  { href: "/admin/attendance", label: "Attendance" },
-  { href: "/admin/leave", label: "Leave" },
-  { href: "/admin/reports", label: "Reports" },
-  { href: "/admin/settings", label: "Settings" },
-];
+import Sidebar from "@/components/common/Sidebar";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="flex gap-6" style={{ ["--accent" as any]: "#2563eb" }}>
+    <div className="flex gap-6">
       <div className="hidden md:block">
-        <Sidebar items={items} title="Admin" />
+        <Sidebar role="admin" title="Admin" />
       </div>
       <div className="min-w-0 flex-1">
         <div className="md:hidden mb-3">
@@ -36,7 +24,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="text-sm font-semibold">Admin Menu</div>
               <button className="glass px-2 py-1 rounded-md text-xs" onClick={() => setOpen(false)}>Close</button>
             </div>
-            <Sidebar items={items} />
+            <Sidebar role="admin" title="Admin" />
           </div>
         </div>
       )}
