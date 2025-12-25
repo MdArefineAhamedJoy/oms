@@ -15,7 +15,7 @@ const items = [
 export default function OmLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-6" style={{ ["--accent" as any]: "#7c3aed" }}>
       <div className="hidden md:block">
         <Sidebar items={items} title="Operation Manager" />
       </div>

@@ -11,7 +11,7 @@ const items = [
 export default function EmployeeLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-6" style={{ ["--accent" as any]: "#059669" }}>
       <div className="hidden md:block">
         <Sidebar items={items} title="Employee" />
       </div>

@@ -22,7 +22,7 @@ export default function Sidebar({ items, title, collapsed = false, className = "
               href={it.href}
               className={`block rounded-md px-3 py-2 text-sm transition-colors ${
                 active
-                  ? "bg-zinc-900 text-white"
+                  ? "accent-bg text-white"
                   : "text-zinc-700 hover:bg-zinc-200/60"
               }`}
             >
