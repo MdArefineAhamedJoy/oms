@@ -1,0 +1,24 @@
+{
+  "users": [
+    { "id": "u1", "name": "Alice Admin", "role": "super_admin" },
+    { "id": "u2", "name": "Omar Ops", "role": "operation_manager" },
+    { "id": "u3", "name": "Eve Employee", "role": "employee", "departmentId": "d1" }
+  ],
+  "companies": [{ "id": "c1", "name": "Acme Corp" }],
+  "departments": [{ "id": "d1", "name": "Engineering" }],
+  "designations": [{ "id": "g1", "name": "Software Engineer" }],
+  "shifts": [
+    { "id": "s1", "name": "General", "start": "09:00", "end": "17:00" },
+    { "id": "s2", "name": "Evening", "start": "13:00", "end": "21:00" }
+  ],
+  "attendance": [
+    { "userId": "u3", "date": "2025-01-02", "status": "present", "checkIn": "09:03", "checkOut": "17:00" }
+  ],
+  "leaveTypes": [{ "id": "l1", "name": "Casual" }, { "id": "l2", "name": "Sick" }],
+  "leaveRequests": [
+    { "id": "lr1", "userId": "u3", "typeId": "l1", "status": "approved" }
+  ],
+  "salaryStructures": [{ "id": "ss1", "name": "Default", "base": 1000 }],
+  "payrollRecords": [{ "id": "p1", "userId": "u3", "month": "2025-01", "net": 1200 }]
+}
+

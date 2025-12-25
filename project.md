@@ -43,17 +43,28 @@ Note: This is demo data and not a full schema.
 
 ## Pages
 
-- `/super-admin` — high-level company stats and quick links
-- `/operation-manager` — team/department-oriented attendance + requests
+- `/admin` — high-level company stats and quick links
+- `/om` — team/department-oriented attendance + requests
 - `/employee` — personal dashboard: todays shift, check-in/out status, monthly view
 
 Home page (`/`) links to the above.
 
+## Progress Checklist
+
+- (✓) Animated homepage with project overview and quick links
+- (✓) Protected route group scaffold with shared layout and navigation
+- (✓) Minimal dashboards: Super Admin, Operation Manager, Employee
+- (✓) Route placeholders: Users, Roster, Shifts, Salary, Attendance, Leave, Reports, Settings
+- (✓) Role-based guard enforcement (client-side)
+- ( ) Demo data file and data loader utilities
+- ( ) Users/Roster/Shift/Salary basic UIs
+- ( ) Attendance/Leave basic UIs and reports presets
+See `TODO.md` for a route-based plan and future work.
 ## How to run
 
 1. Install deps (if not already): `pnpm i` or `npm i`.
 2. Start dev server: `pnpm dev` or `npm run dev`.
-3. Navigate to `/super-admin`, `/operation-manager`, or `/employee`.
+3. Navigate to `/admin`, `/om`, or `/employee`.
 
 No backend is required for this mock; data is served from `public/data/omhs-data.json`.
 
@@ -66,14 +77,14 @@ No backend is required for this mock; data is served from `public/data/omhs-data
 
 ## Advanced Dashboards and Routes (User-Friendly)
 
-- Super Admin Dashboard (`/super-admin`)
+- Super Admin Dashboard (`/admin`)
   - KPIs: Total employees, Present/Absent/On Leave today, Active branches
   - Charts: Monthly attendance trend, Leave by type, Overtime trend
   - Quick Actions: Add employee, Define shift, Configure holidays, Import CSV
   - Filters: Company, branch, department, date range; save/share views
   - Exports: Attendance CSV, Leave CSV, Payroll summary CSV
 
-- Operation Manager Dashboard (`/operation-manager`)
+- Operation Manager Dashboard (`/om`)
   - Team KPIs: Team size, Present/Absent/On Leave today, Late arrivals today
   - Roster Snapshot: Next 7 days with shift legend and off days
   - Action Inbox: Pending leave approvals, attendance corrections, missing check-outs
@@ -126,3 +137,4 @@ No backend is required for this mock; data is served from `public/data/omhs-data
 - Data loads from `public/data/omhs-data.json` (mock)
 - UI-based role guards for three roles: `super_admin`, `operation_manager`, `employee`
 - In production: enforce RBAC server-side and via API
+
