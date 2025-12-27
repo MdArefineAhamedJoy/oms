@@ -28,11 +28,9 @@ export default function OmLayout({ children }: { children: React.ReactNode }) {
           onCollapse={setCollapsed}
         />
       </div>
-
-      {/* Main Content Area - Auto adjusts based on sidebar state */}
       <div 
         className={cn(
-          "min-h-screen flex-1 transition-all duration-300 ease-in-out"
+          "min-h-screen overflow-x-hidden transition-all duration-300 ease-in-out flex-1"
         )}
       >
         {/* Mobile Menu Button */}
