@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 // ==== Roles Available ====
@@ -21,6 +21,7 @@ import {
   UserCheck,
   ChevronLeft,
   ChevronRight,
+  Building2,
 } from "lucide-react";
 
 // ==== All Items in Single Structure ====
@@ -28,12 +29,9 @@ const ALL_ITEMS = [
   // ───────── Admin ─────────
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard, roles: ["admin"] },
   { label: "Users", href: "/admin/users", icon: Users, roles: ["admin"] },
-  { label: "Roster", href: "/admin/roster", icon: CalendarCheck, roles: ["admin"] },
-  { label: "Shifts", href: "/admin/shifts", icon: ListChecks, roles: ["admin"] },
+  { label: "Tenant", href: "/admin/tenants", icon: Building2, roles: ["admin"] },
+  { label: "Analytics", href: "/admin/analytics", icon: FileChartColumn, roles: ["admin"] },
   { label: "Salary", href: "/admin/salary", icon: Wallet, roles: ["admin"] },
-  { label: "Attendance", href: "/admin/attendance", icon: UserCheck, roles: ["admin"] },
-  { label: "Leave", href: "/admin/leave", icon: CalendarRange, roles: ["admin"] },
-  { label: "Reports", href: "/admin/reports", icon: FileChartColumn, roles: ["admin"] },
   { label: "Settings", href: "/admin/settings", icon: Settings, roles: ["admin"] },
 
   // ───────── OM ─────────
@@ -60,43 +58,62 @@ const ACTIVE_STYLE: Record<Role, string> = {
 
 // ========================================================
 
-export default function Sidebar({ role, title = "" }: { role: Role; title?: string }) {
-  const pathname = usePathname();
-  const [collapsed, setCollapsed] = useState(false);
+interface SidebarProps {
+  role: Role;
+  title?: string;
+  collapsed?: boolean;
+  onCollapse?: (collapsed: boolean) => void;
+}
 
+export default function Sidebar({ role, title = "", collapsed, onCollapse }: SidebarProps) {
+  const pathname = usePathname();
   const items = ALL_ITEMS.filter((item) => item.roles.includes(role));
+  const [collapsedState, setCollapsedState] = useState(false);
+  const current = typeof collapsed === "boolean" ? collapsed : collapsedState;
+  const setCurrent = (val: boolean) => {
+    if (typeof onCollapse === "function") onCollapse(val);
+    else setCollapsedState(val);
+  };
+
+  // Broadcast collapse changes for any listeners
+  useEffect(() => {
+    try {
+      const ev = new CustomEvent("sidebar:toggle", { detail: { collapsed: current } });
+      window.dispatchEvent(ev);
+    } catch {}
+  }, [current]);
 
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 h-screen flex flex-col border-r bg-white shadow-sm transition-all duration-300 ease-in-out z-40",
-        collapsed ? "w-16" : "w-64"
+        "sticky top-0 h-screen flex flex-col border-r bg-white shadow-sm transition-all duration-300 ease-in-out z-40",
+        current ? "w-16" : "w-64"
       )}
     >
       {/* Header Section (Fixed - No Scroll) */}
       <div className="flex-none border-b bg-white">
         <div className={cn(
           "flex items-center h-16 px-4 transition-all duration-300",
-          collapsed ? "justify-center px-2" : "justify-between"
+          current ? "justify-center px-2" : "justify-between"
         )}>
           {/* Title with smooth fade */}
           <div className={cn(
             "overflow-hidden transition-all duration-300",
-            collapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+            current ? "w-0 opacity-0" : "w-auto opacity-100"
           )}>
             <h2 className="text-lg font-semibold whitespace-nowrap">{title}</h2>
           </div>
 
           {/* Collapse Button */}
           <button
-            onClick={() => setCollapsed((p) => !p)}
+            onClick={() => setCurrent(!current)}
             className={cn(
               "flex items-center justify-center rounded-lg border border-gray-200 bg-white transition-all hover:bg-gray-50 hover:border-gray-300",
-              collapsed ? "h-10 w-10" : "h-8 w-8"
+              current ? "h-10 w-10" : "h-8 w-8"
             )}
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-label={current ? "Expand sidebar" : "Collapse sidebar"}
           >
-            {collapsed ? (
+            {current ? (
               <ChevronRight size={18} className="text-gray-600" />
             ) : (
               <ChevronLeft size={18} className="text-gray-600" />
@@ -106,7 +123,7 @@ export default function Sidebar({ role, title = "" }: { role: Role; title?: stri
       </div>
 
       {/* Scrollable Menu Section */}
-      <nav className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3">
+      <nav className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3 custom-scrollbar">
         <div className="flex flex-col gap-1.5">
           {items.map(({ label, href, icon: Icon }) => {
             const isActive = pathname === href;
@@ -117,7 +134,7 @@ export default function Sidebar({ role, title = "" }: { role: Role; title?: stri
                 href={href}
                 className={cn(
                   "group relative flex items-center gap-3 rounded-lg py-2.5 text-sm font-medium transition-all duration-200",
-                  collapsed ? "justify-center px-2" : "px-3",
+                  current ? "justify-center px-2" : "px-3",
                   isActive 
                     ? ACTIVE_STYLE[role]
                     : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
@@ -131,13 +148,13 @@ export default function Sidebar({ role, title = "" }: { role: Role; title?: stri
                 {/* Label with smooth fade */}
                 <span className={cn(
                   "whitespace-nowrap transition-all duration-300 overflow-hidden",
-                  collapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+                  current ? "w-0 opacity-0" : "w-auto opacity-100"
                 )}>
                   {label}
                 </span>
 
                 {/* Tooltip for collapsed state */}
-                {collapsed && (
+                {current && (
                   <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 pointer-events-none">
                     {label}
                   </div>
@@ -148,19 +165,19 @@ export default function Sidebar({ role, title = "" }: { role: Role; title?: stri
         </div>
       </nav>
 
-      {/* Optional: Add a subtle scrollbar style */}
+      {/* Scrollbar Styling */}
       <style jsx global>{`
-        nav::-webkit-scrollbar {
+        .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }
-        nav::-webkit-scrollbar-track {
+        .custom-scrollbar::-webkit-scrollbar-track {
           background: transparent;
         }
-        nav::-webkit-scrollbar-thumb {
+        .custom-scrollbar::-webkit-scrollbar-thumb {
           background: #e5e7eb;
           border-radius: 3px;
         }
-        nav::-webkit-scrollbar-thumb:hover {
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #d1d5db;
         }
       `}</style>
