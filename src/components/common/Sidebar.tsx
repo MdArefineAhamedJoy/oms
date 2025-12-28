@@ -22,6 +22,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Building2,
+  AlertCircle,
 } from "lucide-react";
 
 // ==== All Items in Single Structure ====
@@ -37,10 +38,12 @@ const ALL_ITEMS = [
   // ───────── OM ─────────
   { label: "Dashboard", href: "/om", icon: LayoutDashboard, roles: ["om"] },
   { label: "Users", href: "/om/users", icon: Users, roles: ["om"] },
+    { label: "Tenants", href: "/om/tenants", icon: Building2, roles: ["om"] },
   { label: "Roster", href: "/om/roster", icon: CalendarCheck, roles: ["om"] },
   { label: "Shifts", href: "/om/shifts", icon: ListChecks, roles: ["om"] },
   { label: "Attendance", href: "/om/attendance", icon: UserCheck, roles: ["om"] },
   { label: "Leave", href: "/om/leave", icon: CalendarRange, roles: ["om"] },
+  { label: "Incidents", href: "/om/incidents", icon: AlertCircle, roles: ["om"] },
   { label: "Reports", href: "/om/reports", icon: FileChartColumn, roles: ["om"] },
 
   // ───────── Employee/Officer ─────────

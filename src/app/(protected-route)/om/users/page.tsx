@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { MoreVertical, Mail, Phone, MapPin, Clock } from "lucide-react";
-import DataTable, { Column } from "@/components/DataTable";
+import DataTable, { Column } from "@/components/common/DataTable";
 
 type Row = {
   id: string;

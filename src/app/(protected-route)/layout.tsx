@@ -2,7 +2,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import Nav from "@/components/Nav";
 
 const KEY = "oms-role";
 
