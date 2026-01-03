@@ -1,0 +1,34 @@
+[
+  {
+    "id": "EE-01",
+    "name": "Eaint Hannipec",
+    "type": "Annual Leave",
+    "dates": "18 Dec 2025 – 19 Dec 2025",
+    "status": "Pending",
+    "reason": "Family function"
+  },
+  {
+    "id": "EE-02",
+    "name": "Eaint Hannipec",
+    "type": "Annual Leave",
+    "dates": "20 Dec 2025 (0.5 day | Half-day)",
+    "status": "Rejected",
+    "reason": "Go to clinic"
+  },
+  {
+    "id": "EE-03",
+    "name": "Md Arefine",
+    "type": "Sick Leave",
+    "dates": "22 Dec 2025",
+    "status": "Approved",
+    "reason": "Fever"
+  },
+  {
+    "id": "EE-04",
+    "name": "Eaint Hannipec",
+    "type": "Annual Leave",
+    "dates": "23 Dec 2025",
+    "status": "Cancelled",
+    "reason": "Schedule change"
+  }
+]

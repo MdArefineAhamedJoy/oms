@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -14,39 +14,49 @@ import {
   Users,
   CalendarCheck,
   ListChecks,
-  Wallet,
   CalendarRange,
   FileChartColumn,
-  Settings,
   UserCheck,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   Building2,
   AlertCircle,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
+// ==== Types ====
+type NavItem = {
+  label: string;
+  href?: string; // optional for parents that only toggle children
+  icon: LucideIcon;
+  roles: Role[];
+  children?: NavItem[];
+};
 
 // ==== All Items in Single Structure ====
-const ALL_ITEMS = [
-  // ───────── Admin ─────────
-  { label: "Dashboard", href: "/admin", icon: LayoutDashboard, roles: ["admin"] },
-  { label: "Users", href: "/admin/users", icon: Users, roles: ["admin"] },
-  { label: "Tenant", href: "/admin/tenants", icon: Building2, roles: ["admin"] },
-  { label: "Analytics", href: "/admin/analytics", icon: FileChartColumn, roles: ["admin"] },
-  { label: "Salary", href: "/admin/salary", icon: Wallet, roles: ["admin"] },
-  { label: "Settings", href: "/admin/settings", icon: Settings, roles: ["admin"] },
-
-  // ───────── OM ─────────
+const ALL_ITEMS: NavItem[] = [
+  // OM
   { label: "Dashboard", href: "/om", icon: LayoutDashboard, roles: ["om"] },
   { label: "Users", href: "/om/users", icon: Users, roles: ["om"] },
-    { label: "Tenants", href: "/om/tenants", icon: Building2, roles: ["om"] },
+  { label: "Tenants", href: "/om/tenants", icon: Building2, roles: ["om"] },
   { label: "Roster", href: "/om/roster", icon: CalendarCheck, roles: ["om"] },
   { label: "Shifts", href: "/om/shifts", icon: ListChecks, roles: ["om"] },
   { label: "Attendance", href: "/om/attendance", icon: UserCheck, roles: ["om"] },
-  { label: "Leave", href: "/om/leave", icon: CalendarRange, roles: ["om"] },
+  {
+    label: "Leaves",
+    icon: CalendarRange,
+    roles: ["om"],
+    children: [
+      { label: "Leave Requests", href: "/om/leave/request", icon: CalendarRange, roles: ["om"] },
+      { label: "Leave Overview", href: "/om/leave/overview", icon: CalendarRange, roles: ["om"] },
+    ],
+  },
   { label: "Incidents", href: "/om/incidents", icon: AlertCircle, roles: ["om"] },
   { label: "Reports", href: "/om/reports", icon: FileChartColumn, roles: ["om"] },
 
-  // ───────── Employee/Officer ─────────
+  // Employee/Officer
   { label: "Dashboard", href: "/employee", icon: LayoutDashboard, roles: ["employee"] },
   { label: "Attendance", href: "/employee/attendance", icon: UserCheck, roles: ["employee"] },
   { label: "Leave", href: "/employee/leave", icon: CalendarRange, roles: ["employee"] },
@@ -128,43 +138,15 @@ export default function Sidebar({ role, title = "", collapsed, onCollapse }: Sid
       {/* Scrollable Menu Section */}
       <nav className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3 custom-scrollbar">
         <div className="flex flex-col gap-1.5">
-          {items.map(({ label, href, icon: Icon }) => {
-            const isActive = pathname === href;
-
-            return (
-              <Link
-                key={href}
-                href={href}
-                className={cn(
-                  "group relative flex items-center gap-3 rounded-lg py-2.5 text-sm font-medium transition-all duration-200",
-                  current ? "justify-center px-2" : "px-3",
-                  isActive 
-                    ? ACTIVE_STYLE[role]
-                    : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                )}
-              >
-                {/* Icon with fixed size container */}
-                <div className="flex-none w-5 h-5 flex items-center justify-center">
-                  <Icon size={20} className="flex-none" />
-                </div>
-
-                {/* Label with smooth fade */}
-                <span className={cn(
-                  "whitespace-nowrap transition-all duration-300 overflow-hidden",
-                  current ? "w-0 opacity-0" : "w-auto opacity-100"
-                )}>
-                  {label}
-                </span>
-
-                {/* Tooltip for collapsed state */}
-                {current && (
-                  <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 pointer-events-none">
-                    {label}
-                  </div>
-                )}
-              </Link>
-            );
-          })}
+          {items.map((item) => (
+            <NavNode
+              key={item.href ?? item.label}
+              item={item}
+              role={role}
+              pathname={pathname}
+              collapsed={current}
+            />
+          ))}
         </div>
       </nav>
 
@@ -185,5 +167,92 @@ export default function Sidebar({ role, title = "", collapsed, onCollapse }: Sid
         }
       `}</style>
     </aside>
+  );
+}
+
+// ================= Helper Components =================
+function NavNode({ item, role, pathname, collapsed }: { item: NavItem; role: Role; pathname: string; collapsed: boolean }) {
+  const Icon = item.icon;
+
+  const hasChildren = Array.isArray(item.children) && item.children.length > 0;
+  const childActive = hasChildren ? item.children!.some((c) => pathname === c.href) : false;
+  const isActive = (item.href ? pathname === item.href : false) || childActive;
+
+  // Track only user-toggle intent; actual open state is derived to avoid setState in effects
+  const [userOpen, setUserOpen] = useState(false);
+  const open = !collapsed && (userOpen || childActive);
+
+  if (!hasChildren) {
+    return (
+      <Link
+        href={item.href!}
+        className={cn(
+          "group relative flex items-center gap-3 rounded-lg py-2.5 text-sm font-medium transition-all duration-200",
+          collapsed ? "justify-center px-2" : "px-3",
+          isActive ? ACTIVE_STYLE[role] : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+        )}
+      >
+        <div className="flex-none w-5 h-5 flex items-center justify-center">
+          <Icon size={20} className="flex-none" />
+        </div>
+        <span className={cn("whitespace-nowrap transition-all duration-300 overflow-hidden", collapsed ? "w-0 opacity-0" : "w-auto opacity-100")}>{item.label}</span>
+        {collapsed && (
+          <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 pointer-events-none">
+            {item.label}
+          </div>
+        )}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="flex flex-col">
+      <button
+        type="button"
+        onClick={() => !collapsed && setUserOpen((v) => !v)}
+        className={cn(
+          "group relative flex items-center gap-3 rounded-lg py-2.5 text-sm font-medium transition-all duration-200 cursor-pointer",
+          collapsed ? "justify-center px-2" : "px-3 w-full text-left",
+          isActive ? ACTIVE_STYLE[role] : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+        )}
+        aria-expanded={!collapsed && open}
+        aria-haspopup="true"
+      >
+        <div className="flex-none w-5 h-5 flex items-center justify-center">
+          <Icon size={20} className="flex-none" />
+        </div>
+        <span className={cn("whitespace-nowrap transition-all duration-300 overflow-hidden", collapsed ? "w-0 opacity-0" : "w-auto opacity-100 flex-1")}>{item.label}</span>
+        {!collapsed && (open ? <ChevronUp size={16} /> : <ChevronDown size={16} />)}
+        {collapsed && (
+          <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 pointer-events-none">
+            {item.label}
+          </div>
+        )}
+      </button>
+
+      {!collapsed && open && (
+        <div className="ml-9 mt-1 flex flex-col gap-1">
+          {item.children!.map((child) => {
+            const CIcon = child.icon;
+            const cActive = pathname === child.href;
+            return (
+              <Link
+                key={child.href}
+                href={child.href!}
+                className={cn(
+                  "group relative flex items-center gap-2 rounded-md py-2 pl-2 pr-3 text-sm transition-colors",
+                  cActive ? ACTIVE_STYLE[role] : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                )}
+              >
+                <div className="flex-none w-4 h-4 flex items-center justify-center">
+                  <CIcon size={16} className="flex-none" />
+                </div>
+                <span className="whitespace-nowrap">{child.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
