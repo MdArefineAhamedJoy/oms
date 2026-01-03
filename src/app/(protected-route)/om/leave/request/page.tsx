@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import DataTable, { Column } from "@/components/common/DataTable";
 import { cn } from "@/lib/utils";
-import rawData from "@/data/leave-requests.json";
+import rawData from "@/data/leave-requests-static.json";
 import { Plus } from "lucide-react";
 
 type LeaveStatus = "Pending" | "Approved" | "Rejected" | "Cancelled";
@@ -17,8 +17,35 @@ type LeaveRow = {
   status: LeaveStatus; // "Pending" | "Approved" | "Rejected" | "Cancelled"
   reason: string;      // e.g., "Go to clinic"
 };
+// Raw JSON record shape
+type RawLeave = {
+  id: string;
+  name: string;
+  type: string;
+  startDate: string; // YYYY-MM-DD
+  endDate: string;   // YYYY-MM-DD
+  durationUnit: "FULL_DAY" | "HALF_DAY";
+  status: LeaveStatus;
+  reason: string;
+};
 
-const DATA = rawData as LeaveRow[];
+function formatDate(iso: string) {
+  const d = new Date(iso + "T00:00:00");
+  const day = d.getDate();
+  const month = d.toLocaleString(undefined, { month: "short" });
+  const year = d.getFullYear();
+  return `${day} ${month} ${year}`;
+}
+
+function toLeaveRow(r: RawLeave): LeaveRow {
+  const sameDay = r.startDate === r.endDate;
+  const range = sameDay ? formatDate(r.startDate) : `${formatDate(r.startDate)} – ${formatDate(r.endDate)}`;
+  const suffix = r.durationUnit === "HALF_DAY" ? " (0.5 day(s) | Half-day)" : "";
+  return { id: r.id, name: r.name, type: r.type, dates: range + suffix, status: r.status, reason: r.reason };
+}
+
+const RAW = rawData as RawLeave[];
+const DATA: LeaveRow[] = RAW.map(toLeaveRow);
 const STATUS_ORDER: LeaveStatus[] = ["Pending", "Approved", "Rejected", "Cancelled"];
 
 const countByStatus: Record<LeaveStatus, number> = DATA.reduce((acc, r) => {

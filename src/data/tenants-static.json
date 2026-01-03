@@ -1,0 +1,68 @@
+[
+  {
+    "id": "t1",
+    "name": "Acme Healthcare",
+    "code": "ACME",
+    "status": "Active",
+    "sites": 5,
+    "users": 120,
+    "contact": "ops@acmehealth.example",
+    "address": "12 Kingsway, London",
+    "createdAt": "2024-04-12"
+  },
+  {
+    "id": "t2",
+    "name": "Brightwell Group",
+    "code": "BRW",
+    "status": "Active",
+    "sites": 3,
+    "users": 64,
+    "contact": "admin@brightwell.example",
+    "address": "1 Mayfair Ave, London",
+    "createdAt": "2024-06-28"
+  },
+  {
+    "id": "t3",
+    "name": "Northstar Clinics",
+    "code": "NSC",
+    "status": "Inactive",
+    "sites": 2,
+    "users": 18,
+    "contact": "contact@northstar.example",
+    "address": "10 River Rd, Manchester",
+    "createdAt": "2023-12-03"
+  },
+  {
+    "id": "t4",
+    "name": "Delta Medical",
+    "code": "DLT",
+    "status": "Active",
+    "sites": 4,
+    "users": 95,
+    "contact": "it@deltamed.example",
+    "address": "27 Baker St, London",
+    "createdAt": "2024-02-15"
+  },
+  {
+    "id": "t5",
+    "name": "Orchid Health",
+    "code": "ORC",
+    "status": "Active",
+    "sites": 1,
+    "users": 22,
+    "contact": "hello@orchid.example",
+    "address": "5 Queen Sq, Bristol",
+    "createdAt": "2024-08-09"
+  },
+  {
+    "id": "t6",
+    "name": "Zenit Care",
+    "code": "ZNC",
+    "status": "Inactive",
+    "sites": 0,
+    "users": 0,
+    "contact": "-",
+    "address": "-",
+    "createdAt": "2022-11-19"
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "EE-01",
+    "name": "Eaint Hannipec",
+    "type": "Annual Leave",
+    "startDate": "2025-12-18",
+    "endDate": "2025-12-19",
+    "durationUnit": "FULL_DAY",
+    "status": "Pending",
+    "reason": "Family function"
+  },
+  {
+    "id": "EE-02",
+    "name": "Eaint Hannipec",
+    "type": "Annual Leave",
+    "startDate": "2025-12-20",
+    "endDate": "2025-12-20",
+    "durationUnit": "HALF_DAY",
+    "status": "Rejected",
+    "reason": "Go to clinic"
+  },
+  {
+    "id": "EE-03",
+    "name": "Md Arefine",
+    "type": "Sick Leave",
+    "startDate": "2025-12-22",
+    "endDate": "2025-12-22",
+    "durationUnit": "FULL_DAY",
+    "status": "Approved",
+    "reason": "Fever"
+  },
+  {
+    "id": "EE-04",
+    "name": "Eaint Hannipec",
+    "type": "Annual Leave",
+    "startDate": "2025-12-23",
+    "endDate": "2025-12-23",
+    "durationUnit": "FULL_DAY",
+    "status": "Cancelled",
+    "reason": "Schedule change"
+  },
+  {
+    "id": "EE-05",
+    "name": "Md Arefine",
+    "type": "Casual Leave",
+    "startDate": "2025-12-28",
+    "endDate": "2025-12-29",
+    "durationUnit": "FULL_DAY",
+    "status": "Approved",
+    "reason": "Travel"
+  },
+  {
+    "id": "EE-06",
+    "name": "Tanvir Hasan",
+    "type": "Sick Leave",
+    "startDate": "2025-12-30",
+    "endDate": "2025-12-30",
+    "durationUnit": "HALF_DAY",
+    "status": "Pending",
+    "reason": "Doctor appointment"
+  }
+]
