@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 // ==== Roles Available ====
-type Role = "admin" | "om" | "employee";
+type Role = "admin" | "om" | "employee" | "officer";
 
 // ==== Icons ====
 import {
@@ -23,6 +23,13 @@ import {
   ChevronUp,
   Building2,
   AlertCircle,
+  Clock,
+  MapPin,
+  AlertTriangle,
+  BookOpen,
+  Car,
+  Phone,
+  Bell,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -60,6 +67,18 @@ const ALL_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/employee", icon: LayoutDashboard, roles: ["employee"] },
   { label: "Attendance", href: "/employee/attendance", icon: UserCheck, roles: ["employee"] },
   { label: "Leave", href: "/employee/leave", icon: CalendarRange, roles: ["employee"] },
+
+  // Officer
+  { label: "Dashboard", href: "/officer/dashboard", icon: LayoutDashboard, roles: ["officer"] },
+  { label: "Check In/Out", href: "/officer/checkin", icon: Clock, roles: ["officer"] },
+  { label: "Patrol", href: "/officer/patrol", icon: MapPin, roles: ["officer"] },
+  { label: "Report", href: "/officer/report", icon: AlertTriangle, roles: ["officer"] },
+  { label: "Occurrence Book", href: "/officer/occurrence", icon: BookOpen, roles: ["officer"] },
+  { label: "Visitors", href: "/officer/visitors", icon: Users, roles: ["officer"] },
+  { label: "Vehicles", href: "/officer/vehicles", icon: Car, roles: ["officer"] },
+  { label: "Emergency", href: "/officer/emergency", icon: Phone, roles: ["officer"] },
+  { label: "Leave", href: "/officer/leave", icon: CalendarRange, roles: ["officer"] },
+  { label: "Announcements", href: "/officer/announcement", icon: Bell, roles: ["officer"] },
 ];
 
 // ==== Role Based Active Styles ====
@@ -67,6 +86,7 @@ const ACTIVE_STYLE: Record<Role, string> = {
   admin: "bg-black text-white shadow-lg",
   om: "bg-blue-600 text-white shadow-lg shadow-blue-200",
   employee: "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg shadow-purple-200",
+  officer: "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-purple-200",
 };
 
 // ========================================================

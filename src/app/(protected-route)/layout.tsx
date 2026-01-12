@@ -2,6 +2,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
+import Nav from "@/components/Nav";
 
 const KEY = "oms-role";
 
@@ -34,7 +35,8 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     () =>
       pathname.startsWith("/admin") ||
       pathname.startsWith("/om") ||
-      pathname.startsWith("/employee"),
+      pathname.startsWith("/employee") ||
+      pathname.startsWith("/officer"),
     [pathname]
   );
 
