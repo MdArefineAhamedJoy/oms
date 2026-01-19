@@ -30,6 +30,11 @@ import {
   Car,
   Phone,
   Bell,
+  BarChart3,
+  Settings,
+  User,
+  Key,
+  Database,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -44,6 +49,23 @@ type NavItem = {
 
 // ==== All Items in Single Structure ====
 const ALL_ITEMS: NavItem[] = [
+  // Admin
+  { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard, roles: ["admin"] },
+  { label: "Analytics", href: "/admin/analytics", icon: BarChart3, roles: ["admin"] },
+  { label: "Tenants", href: "/admin/tenants", icon: Building2, roles: ["admin"] },
+  { label: "Users", href: "/admin/users", icon: Users, roles: ["admin"] },
+  {
+    label: "Settings",
+    icon: Settings,
+    roles: ["admin"],
+    children: [
+      { label: "General", href: "/admin/settings", icon: Settings, roles: ["admin"] },
+      { label: "API Keys", href: "/admin/settings/api-keys", icon: Key, roles: ["admin"] },
+      { label: "System", href: "/admin/settings/system", icon: Database, roles: ["admin"] },
+    ],
+  },
+  { label: "Profile", href: "/admin/profile", icon: User, roles: ["admin"] },
+
   // OM
   { label: "Dashboard", href: "/om", icon: LayoutDashboard, roles: ["om"] },
   { label: "Users", href: "/om/users", icon: Users, roles: ["om"] },
