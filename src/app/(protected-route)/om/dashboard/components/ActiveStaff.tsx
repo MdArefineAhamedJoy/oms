@@ -2,8 +2,8 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { USER_ROLES, type User } from '@/types';
-import { formatUserRole, normalizeUserRole } from '@/lib/utils/user-role';
+import { type User } from '@/types';
+import { USER_ROLES, formatUserRole, normalizeUserRole } from '@/lib/utils/user-role';
 
 interface StaffStatus {
   documentId: string;

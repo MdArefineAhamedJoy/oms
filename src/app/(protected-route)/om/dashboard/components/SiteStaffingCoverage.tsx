@@ -3,6 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import DataTable, { Column } from '@/components/common/DataTable';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 
@@ -33,15 +34,15 @@ const STATUS_STYLES: Record<
   { badge: string; helper: string }
 > = {
   'fully-staffed': {
-    badge: 'bg-emerald-100 text-emerald-700',
+    badge: 'bg-emerald-100 text-emerald-700 border-none px-3 py-1 font-semibold text-xs rounded-md',
     helper: 'All required posts are filled.',
   },
   understaffed: {
-    badge: 'bg-amber-100 text-amber-700',
+    badge: 'bg-amber-100 text-amber-700 border-none px-3 py-1 font-semibold text-xs rounded-md',
     helper: 'Assign additional officers as soon as possible.',
   },
   overstaffed: {
-    badge: 'bg-blue-100 text-blue-700',
+    badge: 'bg-blue-100 text-blue-700 border-none px-3 py-1 font-semibold text-xs rounded-md',
     helper: 'Consider redeploying surplus officers.',
   },
 };
@@ -62,7 +63,7 @@ function formatCoverageMessage(site: SiteStaffing) {
 function renderShiftBadges(site: SiteStaffing) {
   if (!site.shifts || Object.keys(site.shifts).length === 0) {
     return (
-      <Badge variant="outline" className="text-xs text-muted-foreground">
+      <Badge variant="outline" className="text-xs text-zinc-500">
         No shifts scheduled
       </Badge>
     );
@@ -75,7 +76,7 @@ function renderShiftBadges(site: SiteStaffing) {
       const label = code;
       const assigned = shift.assigned ?? 0;
       return (
-        <Badge key={shiftCode} className={cn('text-xs bg-blue-50 text-blue-700')}>
+        <Badge key={shiftCode} className={cn('text-xs bg-blue-50 text-blue-700 border-none')}>
           {label}: {assigned}
         </Badge>
       );
@@ -135,7 +136,7 @@ export default function SiteStaffingCoverage({
           <Button
             variant="ghost"
             size="sm"
-            className="self-start text-blue-600 hover:text-blue-700"
+            className="self-start text-blue-600 hover:text-blue-700 cursor-pointer"
             onClick={() => (window.location.href = '/om/sites')}
           >
             Manage Sites
@@ -143,12 +144,58 @@ export default function SiteStaffingCoverage({
           </Button>
         </div>
 
-        <div className="text-center py-6 text-sm text-muted-foreground flex-1 flex items-center justify-center">
+        <div className="text-center py-6 text-sm text-zinc-500 flex-1 flex items-center justify-center">
           No site staffing data available.
         </div>
       </Card>
     );
   }
+
+  const columns: Column<SiteStaffing>[] = [
+    {
+      key: 'site',
+      header: 'Site',
+      className: 'min-w-[200px]',
+      cell: (row) => (
+        <div className="space-y-0.5">
+          <p className="font-medium text-zinc-900">{row.name}</p>
+          {row.siteCode && (
+            <p className="text-xs uppercase tracking-wide text-zinc-500">
+              Code: {row.siteCode}
+            </p>
+          )}
+        </div>
+      ),
+    },
+    {
+      key: 'guards',
+      header: 'Assigned Guards',
+      className: 'min-w-[120px]',
+      cell: (row) => (
+        <p className="text-base font-semibold text-zinc-900">{row.currentStaff ?? 0}</p>
+      ),
+    },
+    {
+      key: 'coverage',
+      header: 'Coverage',
+      className: 'min-w-[180px]',
+      cell: (row) => {
+        const statusStyle = STATUS_STYLES[row.status] ?? STATUS_STYLES['fully-staffed'];
+        return (
+          <div className="space-y-1">
+            <Badge className={statusStyle.badge}>{formatCoverageMessage(row)}</Badge>
+            <p className="text-xs text-zinc-500">{statusStyle.helper}</p>
+          </div>
+        );
+      },
+    },
+    {
+      key: 'shifts',
+      header: 'Shifts',
+      className: 'min-w-[200px]',
+      cell: (row) => <div className="flex flex-wrap gap-2">{renderShiftBadges(row)}</div>,
+    },
+  ];
 
   return (
     <Card className="bg-white p-4 h-full flex flex-col">
@@ -164,7 +211,7 @@ export default function SiteStaffingCoverage({
         <Button
           variant="ghost"
           size="sm"
-          className="self-start text-blue-600 hover:text-blue-700"
+          className="self-start text-blue-600 hover:text-blue-700 cursor-pointer"
           onClick={() => (window.location.href = '/om/sites')}
         >
           Manage Sites
@@ -172,65 +219,8 @@ export default function SiteStaffingCoverage({
         </Button>
       </div>
 
-      <div className=" overflow-x-auto">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b text-left text-sm text-muted-foreground">
-              <th className="py-3 pr-3 font-medium">Site</th>
-              <th className="py-3 pr-3 font-medium">Assigned Guards</th>
-              <th className="py-3 pr-3 font-medium">Coverage</th>
-              <th className="py-3 pr-3 font-medium">Shifts</th>
-            </tr>
-          </thead>
-          <tbody className="text-sm">
-            {siteStaffing.map((site) => {
-              const statusStyle = STATUS_STYLES[site.status] ?? STATUS_STYLES['fully-staffed'];
-              const helperMessage = statusStyle.helper;
-              const difference = (site.currentStaff ?? 0) - (site.requiredStaff ?? 0);
-              const differenceLabel =
-                difference === 0
-                  ? 'On target'
-                  : difference > 0
-                    ? `+${difference} available`
-                    : `${Math.abs(difference)} needed`;
-
-              return (
-                <tr key={site.documentId} className="border-b last:border-0">
-                  <td className="py-4 pr-3 align-top">
-                    <div className="space-y-0.5">
-                      <p className="font-medium text-gray-900">{site.name}</p>
-                      {site.siteCode && (
-                        <p className="text-xs uppercase tracking-wide text-gray-500">
-                          Code: {site.siteCode}
-                        </p>
-                      )}
-                    </div>
-                  </td>
-                  <td className="py-4 pr-3 align-top">
-                    <div>
-                      <p className="text-base font-semibold text-gray-900">
-                        {site.currentStaff ?? 0}
-                      </p>
-                    </div>
-                  </td>
-                  <td className="py-4 pr-3 align-top">
-                    <div className="space-y-1">
-                      <Badge className={cn('text-xs', statusStyle.badge)}>
-                        {formatCoverageMessage(site)}
-                      </Badge>
-                      <p className="text-xs text-gray-500">{helperMessage}</p>
-                    </div>
-                  </td>
-                  <td className="py-4 pr-3 align-top">
-                    <div className="flex flex-wrap gap-2">
-                      {renderShiftBadges(site)}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="overflow-x-auto">
+        <DataTable columns={columns} data={siteStaffing} />
       </div>
     </Card>
   );

@@ -1,0 +1,163 @@
+export interface FakeIncident {
+  id: string;
+  incidentNumber: string;
+  title: string;
+  site: string;
+  siteCode: string;
+  incidentType: string;
+  subType: string;
+  severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+  status: 'REPORTED' | 'ACKNOWLEDGED' | 'INVESTIGATING' | 'RESOLVED';
+  assignedTo?: string;
+  incidentTime: string;
+  description: string;
+  location: string;
+  injuries: boolean;
+  propertyDamage: boolean;
+}
+
+export const fakeIncidents: FakeIncident[] = [
+  {
+    id: '1',
+    incidentNumber: 'INC-2024-001',
+    title: 'Unauthorized Access Attempt',
+    site: 'Downtown Plaza',
+    siteCode: 'DT01',
+    incidentType: 'SECURITY',
+    subType: 'Trespassing',
+    severity: 'HIGH',
+    status: 'INVESTIGATING',
+    assignedTo: 'John Anderson',
+    incidentTime: '2024-01-15T10:30:00Z',
+    description: 'Unauthorized individual attempted to access restricted area. Security guard intercepted and individual fled the scene.',
+    location: 'North Entrance, Lobby',
+    injuries: false,
+    propertyDamage: false,
+  },
+  {
+    id: '2',
+    incidentNumber: 'INC-2024-002',
+    title: 'Fire Alarm Malfunction',
+    site: 'Tech Park Complex',
+    siteCode: 'TP02',
+    incidentType: 'SAFETY',
+    subType: 'Fire Safety',
+    severity: 'MEDIUM',
+    status: 'ACKNOWLEDGED',
+    assignedTo: 'Sarah Mitchell',
+    incidentTime: '2024-01-15T09:15:00Z',
+    description: 'Fire alarm triggered without cause. System inspection required.',
+    location: 'Building B, 2nd Floor',
+    injuries: false,
+    propertyDamage: false,
+  },
+  {
+    id: '3',
+    incidentNumber: 'INC-2024-003',
+    title: 'Suspicious Package Report',
+    site: 'Metro Center Mall',
+    siteCode: 'MC04',
+    incidentType: 'SECURITY',
+    subType: 'Suspicious Activity',
+    severity: 'CRITICAL',
+    status: 'INVESTIGATING',
+    assignedTo: 'Mike Johnson',
+    incidentTime: '2024-01-15T08:45:00Z',
+    description: 'Unattended package found near food court. Bomb squad notified.',
+    location: 'Food Court, Center Area',
+    injuries: false,
+    propertyDamage: false,
+  },
+  {
+    id: '4',
+    incidentNumber: 'INC-2024-004',
+    title: 'Parking Lot Dispute',
+    site: 'Harbor Point',
+    siteCode: 'HP03',
+    incidentType: 'SECURITY',
+    subType: 'Dispute',
+    severity: 'LOW',
+    status: 'RESOLVED',
+    assignedTo: 'Emily Chen',
+    incidentTime: '2024-01-15T07:30:00Z',
+    description: 'Verbal dispute between two customers over parking space. Resolved amicably.',
+    location: 'Parking Lot B, Space 45',
+    injuries: false,
+    propertyDamage: false,
+  },
+  {
+    id: '5',
+    incidentNumber: 'INC-2024-005',
+    title: 'Equipment Theft',
+    site: 'Airport Terminal',
+    siteCode: 'AT05',
+    incidentType: 'SECURITY',
+    subType: 'Theft',
+    severity: 'HIGH',
+    status: 'REPORTED',
+    incidentTime: '2024-01-15T06:00:00Z',
+    description: 'Construction equipment reported missing from storage area. Value estimated at $2,500.',
+    location: 'Storage Area C, Rear Entrance',
+    injuries: false,
+    propertyDamage: true,
+  },
+  {
+    id: '6',
+    incidentNumber: 'INC-2024-006',
+    title: 'Slip and Fall Incident',
+    site: 'Downtown Plaza',
+    siteCode: 'DT01',
+    incidentType: 'SAFETY',
+    subType: 'Slip/Trip/Fall',
+    severity: 'MEDIUM',
+    status: 'INVESTIGATING',
+    assignedTo: 'Lisa Thompson',
+    incidentTime: '2024-01-14T16:20:00Z',
+    description: 'Customer slipped on wet floor in restroom. Minor injury reported.',
+    location: 'Restroom, 1st Floor',
+    injuries: true,
+    propertyDamage: false,
+  },
+  {
+    id: '7',
+    incidentNumber: 'INC-2024-007',
+    title: 'Vandalism Report',
+    site: 'Tech Park Complex',
+    siteCode: 'TP02',
+    incidentType: 'SECURITY',
+    subType: 'Vandalism',
+    severity: 'MEDIUM',
+    status: 'ACKNOWLEDGED',
+    incidentTime: '2024-01-14T14:00:00Z',
+    description: 'Graffiti found on exterior wall. Maintenance notified for cleanup.',
+    location: 'East Wing, Exterior Wall',
+    injuries: false,
+    propertyDamage: true,
+  },
+  {
+    id: '8',
+    incidentNumber: 'INC-2024-008',
+    title: 'Medical Emergency',
+    site: 'Metro Center Mall',
+    siteCode: 'MC04',
+    incidentType: 'SAFETY',
+    subType: 'Medical',
+    severity: 'HIGH',
+    status: 'RESOLVED',
+    assignedTo: 'James Wilson',
+    incidentTime: '2024-01-14T11:30:00Z',
+    description: 'Customer experienced cardiac arrest. EMS responded and transported to hospital.',
+    location: 'Main Atrium, Near Information Desk',
+    injuries: true,
+    propertyDamage: false,
+  },
+];
+
+export const incidentStats = {
+  total: fakeIncidents.length,
+  reported: fakeIncidents.filter((i) => i.status === 'REPORTED').length,
+  investigating: fakeIncidents.filter((i) => i.status === 'INVESTIGATING').length,
+  resolved: fakeIncidents.filter((i) => i.status === 'RESOLVED').length,
+  critical: fakeIncidents.filter((i) => i.severity === 'CRITICAL').length,
+  high: fakeIncidents.filter((i) => i.severity === 'HIGH').length,
+};
