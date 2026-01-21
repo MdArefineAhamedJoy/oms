@@ -68,6 +68,7 @@ const ALL_ITEMS: NavItem[] = [
 
   // OM
   { label: "Dashboard", href: "/om", icon: LayoutDashboard, roles: ["om"] },
+  { label: "Sites", href: "/om/sites", icon: MapPin, roles: ["om"] },
   { label: "Users", href: "/om/users", icon: Users, roles: ["om"] },
   { label: "Tenants", href: "/om/tenants", icon: Building2, roles: ["om"] },
   { label: "Roster", href: "/om/roster", icon: CalendarCheck, roles: ["om"] },
@@ -83,6 +84,9 @@ const ALL_ITEMS: NavItem[] = [
     ],
   },
   { label: "Incidents", href: "/om/incidents", icon: AlertCircle, roles: ["om"] },
+  { label: "Occurrence Book", href: "/om/occurrence", icon: BookOpen, roles: ["om"] },
+  { label: "Visitors", href: "/om/visitors", icon: Users, roles: ["om"] },
+  { label: "Vehicles", href: "/om/vehicles", icon: Car, roles: ["om"] },
   { label: "Reports", href: "/om/reports", icon: FileChartColumn, roles: ["om"] },
 
   // Employee/Officer

@@ -1,13 +1,21 @@
 "use client";
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import RoleSwitcher from "./RoleSwitcher";
 
 type Role = "super_admin" | "operation_manager" | "employee";
 
 function linksFor(role: Role) {
-  const base = role === "super_admin" ? "/admin" : role === "operation_manager" ? "/om" : "/employee";
-  const common = [{ href: "/", label: "Home" }, { href: base, label: "Dashboard" }];
+  const base =
+    role === "super_admin"
+      ? "/admin"
+      : role === "operation_manager"
+        ? "/om"
+        : "/employee";
+  const common = [
+    { href: "/", label: "Home" },
+    { href: base, label: "Dashboard" },
+  ];
   if (role === "super_admin") {
     return [
       ...common,
@@ -24,12 +32,16 @@ function linksFor(role: Role) {
   if (role === "operation_manager") {
     return [
       ...common,
+      { href: `${base}/site`, label: "Site" },
       { href: `${base}/users`, label: "Users" },
       { href: `${base}/roster`, label: "Roster" },
       { href: `${base}/shifts`, label: "Shifts" },
       { href: `${base}/attendance`, label: "Attendance" },
       { href: `${base}/leave`, label: "Leave" },
       { href: `${base}/reports`, label: "Reports" },
+      { href: `${base}/vehicles`, label: "Vehicles" },
+      { href: `${base}/visitor`, label: "Visitor" },
+      { href: `${base}/occurrence-book`, label: "Occurrence Book" },
     ];
   }
   return [
@@ -43,7 +55,6 @@ export default function Nav() {
   const [role, setRole] = useState<Role>("employee");
   useEffect(() => {
     const saved = (localStorage.getItem("oms-role") as Role) || "employee";
-    setRole(saved);
     const onStorage = (e: StorageEvent) => {
       if (e.key === "oms-role" && e.newValue) setRole(e.newValue as Role);
     };
@@ -58,7 +69,11 @@ export default function Nav() {
       <div className="container-section flex h-14 items-center justify-between">
         <nav className="flex gap-4 text-sm">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className="text-zinc-700 hover:text-zinc-900">
+            <Link
+              key={l.href}
+              href={l.href}
+              className="text-zinc-700 hover:text-zinc-900"
+            >
               {l.label}
             </Link>
           ))}
